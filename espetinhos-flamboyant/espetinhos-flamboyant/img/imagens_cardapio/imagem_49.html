@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cardápio - Espetinhos Flamboyant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #f5f5f5; color: #333; padding-bottom: 80px; }
+        html { scroll-behavior: smooth; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .app-header { position: sticky; top: 0; z-index: 100; background: #6b21a8; color: white; padding: 12px 15px 10px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .btn-back { width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; flex-shrink: 0; border: none; cursor: pointer; }
+        .btn-back:active { background: rgba(255,255,255,0.25); }
+        .header-info { flex: 1; min-width: 0; }
+        .header-empresa { font-size: 1.05rem; font-weight: 800; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .header-local { font-size: 0.72rem; color: rgba(255,255,255,0.75); margin-top: 1px; display: flex; align-items: center; gap: 4px; }
+        .header-local i { font-size: 0.65rem; }
+        .header-modo { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 8px; font-size: 0.68rem; font-weight: 600; margin-top: 3px; }
+        .btn-cart { width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; flex-shrink: 0; position: relative; }
+        .btn-cart:active { background: rgba(255,255,255,0.25); }
+        .cart-badge { position: absolute; top: -4px; right: -4px; background: #f59e0b; color: white; font-size: 0.6rem; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #6b21a8; }
+        .cart-badge.hidden { display: none; }
+        
+        #searchBox { display: none; margin-top: 10px; animation: slideDown 0.3s ease; }
+        #searchBox.show { display: block; }
+        .search-form { position: relative; }
+        .search-input { width: 100%; background: white; border: none; border-radius: 10px; padding: 10px 40px 10px 38px; font-size: 0.9rem; color: #333; outline: none; }
+        .search-input::placeholder { color: #9ca3af; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+        .search-close { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 8px; border: none; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        
+        .alerta-busca { background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; padding: 10px 15px; border-radius: 8px; margin: 10px 15px; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; }
+        .alerta-busca a { background: #f59e0b; color: white; padding: 4px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; }
+        
+        .tabs-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; margin-top: 8px; -ms-overflow-style: none; scrollbar-width: none; }
+        .tabs-scroll::-webkit-scrollbar { display: none; }
+        .tab-btn { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn.active { background: white; color: #6b21a8; font-weight: 800; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: none; }
+
+        .promo-section { padding: 15px 0 15px 15px; background: white; margin-bottom: 10px; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 10px; padding-right: 15px; display: flex; align-items: center; gap: 8px; }
+        .promo-scroll { display: flex; gap: 12px; overflow-x: auto; padding-right: 15px; padding-bottom: 10px; }
+        .promo-card { flex: 0 0 140px; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #eee; }
+        .promo-img-wrap { width: 100%; height: 140px; background: #f9f9f9; }
+        .promo-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .promo-info { padding: 8px; }
+        .promo-price { color: #16a34a; font-weight: 800; font-size: 1rem; }
+        .promo-old { color: #999; font-size: 0.75rem; text-decoration: line-through; margin-left: 4px; }
+        .promo-name { font-size: 0.8rem; color: #555; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .product-list { background: white; border-radius: 12px; margin: 0 15px 15px 15px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .category-header { padding: 15px 15px 10px 15px; background: #fff; position: sticky; top: 130px; z-index: 50; font-size: 1.1rem; font-weight: 700; color: #1f2937; border-bottom: 1px solid #f3f4f6; }
+        .product-item { display: flex; padding: 15px; gap: 12px; border-bottom: 1px solid #f3f4f6; align-items: center; }
+        .product-item:last-child { border-bottom: none; }
+        .prod-img { width: 85px; height: 85px; flex-shrink: 0; border-radius: 10px; overflow: hidden; background: #f3f4f6; }
+        .prod-img img { width: 100%; height: 100%; object-fit: cover; }
+        .prod-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; height: 85px; }
+        .prod-title { font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .prod-desc { font-size: 0.8rem; color: #6b7280; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: auto; }
+        .prod-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+        .prod-price-wrap { display: flex; align-items: baseline; gap: 6px; }
+        .price-main { font-size: 1.1rem; font-weight: 800; color: #16a34a; }
+        .price-old { font-size: 0.8rem; color: #9ca3af; text-decoration: line-through; }
+        .btn-add { background: #6b21a8; color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; border: none; cursor: pointer; transition: 0.2s; }
+        .btn-add:active { transform: scale(0.9); }
+
+        .cart-float { position: fixed; bottom: 20px; left: 20px; right: 20px; background: #6b21a8; color: white; padding: 14px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(107, 33, 168, 0.4); z-index: 200; transform: translateY(150%); transition: transform 0.3s ease; }
+        .cart-float.show { transform: translateY(0); }
+        
+        .no-results { text-align: center; padding: 40px 20px; color: #6b7280; }
+        .no-results i { font-size: 3rem; margin-bottom: 10px; color: #d1d5db; }
+        
+        #modal-produto {
+            position: fixed; inset: 0; background: white; z-index: 200;
+            display: none; flex-direction: column; overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        #modal-produto.show { display: flex; }
+        .modal-header { background: #6b21a8; color: white; padding: 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+        .modal-img { width: 100%; height: 220px; background: #f3f4f6; }
+        .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-title { font-size: 1.25rem; font-weight: 700; color: #111827; text-align: center; margin: 16px 0 8px; }
+        .modal-desc { color: #6b7280; text-align: center; font-size: 0.9rem; line-height: 1.4; margin-bottom: 24px; padding: 0 20px; }
+        
+        .qty-control { background: #f9fafb; border-radius: 12px; padding: 16px; margin: 0 20px 24px; }
+        .qty-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .qty-label { font-weight: 600; color: #374151; }
+        .qty-unit { font-size: 0.85rem; color: #6b7280; }
+        .qty-buttons { display: flex; justify-content: space-between; align-items: center; }
+        .qty-btn { width: 44px; height: 44px; border-radius: 12px; font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; }
+        .qty-btn.minus { background: #fee2e2; color: #dc2626; }
+        .qty-btn.plus { background: #dcfce7; color: #16a34a; }
+        .qty-value { font-size: 1.5rem; font-weight: 700; color: #111827; width: 40px; text-align: center; }
+        .qty-total { text-align: right; }
+        .qty-total-price { font-size: 1.5rem; font-weight: 800; color: #16a34a; }
+        
+        .obs-section { margin: 0 20px 24px; }
+        .obs-label { display: block; font-weight: 600; color: #374151; margin-bottom: 8px; }
+        .obs-input { width: 100%; border: 2px solid #e5e7eb; border-radius: 12px; padding: 12px 16px; font-size: 1rem; color: #374151; outline: none; transition: border-color 0.2s; }
+        .obs-input:focus { border-color: #6b21a8; }
+        .obs-input::placeholder { color: #9ca3af; }
+        
+        .btn-add-to-cart {
+            margin: 0 20px 24px;
+            background: #6b21a8; color: white; border: none; border-radius: 16px;
+            padding: 16px 24px; font-size: 1.1rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add-to-cart:active { background: #5b2186; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="app-header">
+        <div class="header-top">
+            <a href="/" class="btn-back"><i class="fas fa-arrow-left"></i></a>
+            <div class="header-info">
+                <div class="header-empresa">ESPETINHOS FLAMBOYANT</div>
+                <div class="header-local"><i class="fas fa-map-marker-alt"></i> Cerquilho - SP</div>
+                <div class="header-modo"><i class="fas fa-motorcycle"></i> Entrega</div>
+            </div>
+            <button onclick="toggleSearch()" class="btn-back" style="margin-left:8px;"><i class="fas fa-search"></i></button>
+            <a href="/carrinho.php" class="btn-cart"><i class="fas fa-shopping-bag"></i><span class="cart-badge hidden" id="cartBadge">0</span></a>
+        </div>
+        
+        <div id="searchBox">
+            <form method="GET" action="/cardapio.php" class="search-form">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="q" class="search-input" placeholder="Buscar no cardápio..." value="">
+                <button type="button" class="search-close" onclick="toggleSearch()"><i class="fas fa-times"></i></button>
+            </form>
+        </div>
+        
+                
+        <div class="tabs-scroll" id="tabsScroll">
+                        <a href="#promos" class="tab-btn active" data-target="promos">🔥 Promoções</a>
+                                        <a href="#cat-ESPETOS" class="tab-btn" data-target="cat-ESPETOS">ESPETOS</a>
+                            <a href="#cat-GRELHADOS-NA-BRASA" class="tab-btn" data-target="cat-GRELHADOS-NA-BRASA">GRELHADOS NA BRASA</a>
+                            <a href="#cat-LANCHES" class="tab-btn" data-target="cat-LANCHES">LANCHES</a>
+                            <a href="#cat-POR----ES" class="tab-btn" data-target="cat-POR----ES">PORÇÕES</a>
+                            <a href="#cat-ACOMPANHAMENTOS" class="tab-btn" data-target="cat-ACOMPANHAMENTOS">ACOMPANHAMENTOS</a>
+                            <a href="#cat-CERVEJAS" class="tab-btn" data-target="cat-CERVEJAS">CERVEJAS</a>
+                            <a href="#cat-REFRI---LATAS" class="tab-btn" data-target="cat-REFRI---LATAS">REFRI - LATAS</a>
+                            <a href="#cat-AGUAS" class="tab-btn" data-target="cat-AGUAS">AGUAS</a>
+                            <a href="#cat-SUCOS" class="tab-btn" data-target="cat-SUCOS">SUCOS</a>
+                            <a href="#cat-SOBREMESA" class="tab-btn" data-target="cat-SOBREMESA">SOBREMESA</a>
+                    </div>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div>
+                <div id="promos" class="promo-section">
+            <div class="section-title"><i class="fas fa-tags" style="color:#eab308"></i> Promoções</div>
+            <div class="promo-scroll">
+                                <div class="promo-card" onclick="openProductModal(12, 'BIFE ANCHO  ANGUS 1 PORÇÃO', 132, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/12.png', 'APROXIMADAMENTE 0,900 GRAMAS', true)">
+                    <div class="promo-img-wrap"><img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/12.png" alt="Img" onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'"></div>
+                    <div class="promo-info">
+                        <div><span class="promo-price">R$ 132,00</span><span class="promo-old">R$ 139,00</span></div>
+                        <div class="promo-name">BIFE ANCHO  ANGUS 1 PORÇÃO</div>
+                    </div>
+                </div>
+                                <div class="promo-card" onclick="openProductModal(163, 'BIFE STEAK CHORIÇO  ( ESTANCIA 92) - 1 PORÇÃO', 119, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/163.jpeg', 'APROXIMADAMENTE 0,800 GRAMAS ( SERVE DE 02 A 03 PESSOAS ) ', true)">
+                    <div class="promo-img-wrap"><img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/163.jpeg" alt="Img" onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'"></div>
+                    <div class="promo-info">
+                        <div><span class="promo-price">R$ 119,00</span><span class="promo-old">R$ 129,00</span></div>
+                        <div class="promo-name">BIFE STEAK CHORIÇO  ( ESTANCIA 92) - 1 PORÇÃO</div>
+                    </div>
+                </div>
+                                <div class="promo-card" onclick="openProductModal(10, 'BISTECA COM FILE ANGUS 1 PORÇÃO', 132, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/10.jpg', 'APROXIMADAMENTE 1.400 GRAMAS', true)">
+                    <div class="promo-img-wrap"><img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/10.jpg" alt="Img" onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'"></div>
+                    <div class="promo-info">
+                        <div><span class="promo-price">R$ 132,00</span><span class="promo-old">R$ 139,00</span></div>
+                        <div class="promo-name">BISTECA COM FILE ANGUS 1 PORÇÃO</div>
+                    </div>
+                </div>
+                                <div class="promo-card" onclick="openProductModal(11, 'BISTECA COM FILE ANGUS 1/2 PORÇÃO', 72, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/11.jpg', 'APROXIMADAMENTE 0,700 GRAMAS', true)">
+                    <div class="promo-img-wrap"><img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/11.jpg" alt="Img" onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'"></div>
+                    <div class="promo-info">
+                        <div><span class="promo-price">R$ 72,00</span><span class="promo-old">R$ 72,90</span></div>
+                        <div class="promo-name">BISTECA COM FILE ANGUS 1/2 PORÇÃO</div>
+                    </div>
+                </div>
+                            </div>
+        </div>
+        
+                    <div id="cat-ESPETOS" data-category-name="cat-ESPETOS" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">ESPETOS</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(3, 'CHURRASCO BOVINO ', 12.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/3.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/3.png" 
+                                 alt="CHURRASCO BOVINO "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">CHURRASCO BOVINO </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 12,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(6, 'CORAÇÃO', 12.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/6.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/6.png" 
+                                 alt="CORAÇÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">CORAÇÃO</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 12,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(7, 'KAFTA ', 11.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/7.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/7.png" 
+                                 alt="KAFTA "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">KAFTA </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 11,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(2, 'LINGUIÇA PURA', 10.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/2.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/2.png" 
+                                 alt="LINGUIÇA PURA"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">LINGUIÇA PURA</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 10,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(4, 'MEDALHÃO DE FRANGO', 11.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/4.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/4.png" 
+                                 alt="MEDALHÃO DE FRANGO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">MEDALHÃO DE FRANGO</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 11,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(96, 'MIX DE PIMENTA GOURMET-100 GRAMAS', 4.99, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/96.jpg', 'LEVE E MODERADA - IRRESISTIVEL', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/96.jpg" 
+                                 alt="MIX DE PIMENTA GOURMET-100 GRAMAS"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">MIX DE PIMENTA GOURMET-100 GRAMAS</div><div class="prod-desc">LEVE E MODERADA - IRRESISTIVEL</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 4,99</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(1, 'PÃO DE ALHO', 9.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/1.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/1.png" 
+                                 alt="PÃO DE ALHO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">PÃO DE ALHO</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 9,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(137, 'PAO DE PEPERONI COM REQUEIJÃO', 9.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/137.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/137.png" 
+                                 alt="PAO DE PEPERONI COM REQUEIJÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">PAO DE PEPERONI COM REQUEIJÃO</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 9,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(5, 'QUEIJO COALHO', 10, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/5.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/5.png" 
+                                 alt="QUEIJO COALHO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">QUEIJO COALHO</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 10,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(124, 'ROMEU E JULIETA ( DOCE )', 12.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/124.jpeg', 'QUEIJO - GOIABADA GOURMET E BACON', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/124.jpeg" 
+                                 alt="ROMEU E JULIETA ( DOCE )"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">ROMEU E JULIETA ( DOCE )</div><div class="prod-desc">QUEIJO - GOIABADA GOURMET E BACON</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 12,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-GRELHADOS-NA-BRASA" data-category-name="cat-GRELHADOS-NA-BRASA" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">GRELHADOS NA BRASA</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(12, 'BIFE ANCHO  ANGUS 1 PORÇÃO', 132, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/12.png', 'APROXIMADAMENTE 0,900 GRAMAS', true)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/12.png" 
+                                 alt="BIFE ANCHO  ANGUS 1 PORÇÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BIFE ANCHO  ANGUS 1 PORÇÃO</div><div class="prod-desc">APROXIMADAMENTE 0,900 GRAMAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 132,00</span><span class="price-old">R$ 139,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(13, 'BIFE ANCHO ANGUS 1/2 PORÇÃO', 72.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/13.png', 'APROXIMADAMENTE 0,450 GRAMAS', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/13.png" 
+                                 alt="BIFE ANCHO ANGUS 1/2 PORÇÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BIFE ANCHO ANGUS 1/2 PORÇÃO</div><div class="prod-desc">APROXIMADAMENTE 0,450 GRAMAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 72,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(163, 'BIFE STEAK CHORIÇO  ( ESTANCIA 92) - 1 PORÇÃO', 119, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/163.jpeg', 'APROXIMADAMENTE 0,800 GRAMAS ( SERVE DE 02 A 03 PESSOAS ) ', true)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/163.jpeg" 
+                                 alt="BIFE STEAK CHORIÇO  ( ESTANCIA 92) - 1 PORÇÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BIFE STEAK CHORIÇO  ( ESTANCIA 92) - 1 PORÇÃO</div><div class="prod-desc">APROXIMADAMENTE 0,800 GRAMAS ( SERVE DE 02 A 03 PESSOAS ) </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 119,00</span><span class="price-old">R$ 129,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(10, 'BISTECA COM FILE ANGUS 1 PORÇÃO', 132, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/10.jpg', 'APROXIMADAMENTE 1.400 GRAMAS', true)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/10.jpg" 
+                                 alt="BISTECA COM FILE ANGUS 1 PORÇÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BISTECA COM FILE ANGUS 1 PORÇÃO</div><div class="prod-desc">APROXIMADAMENTE 1.400 GRAMAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 132,00</span><span class="price-old">R$ 139,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(11, 'BISTECA COM FILE ANGUS 1/2 PORÇÃO', 72, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/11.jpg', 'APROXIMADAMENTE 0,700 GRAMAS', true)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/11.jpg" 
+                                 alt="BISTECA COM FILE ANGUS 1/2 PORÇÃO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BISTECA COM FILE ANGUS 1/2 PORÇÃO</div><div class="prod-desc">APROXIMADAMENTE 0,700 GRAMAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 72,00</span><span class="price-old">R$ 72,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(130, 'COSTELINHA DEFUMADA AO MOLHO BARBECUE COM BATATA FRITAS', 89, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/130.jpg', '0,500 GRAMAS COSTELINHA DEFUMADA + 0,400 BATATA FRITA ', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/130.jpg" 
+                                 alt="COSTELINHA DEFUMADA AO MOLHO BARBECUE COM BATATA FRITAS"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">COSTELINHA DEFUMADA AO MOLHO BARBECUE COM BATATA FRITAS</div><div class="prod-desc">0,500 GRAMAS COSTELINHA DEFUMADA + 0,400 BATATA FRITA </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 89,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(118, 'PÃO BAGUETE (Semi Italiano)', 11.99, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/118.jpeg', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/118.jpeg" 
+                                 alt="PÃO BAGUETE (Semi Italiano)"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">PÃO BAGUETE (Semi Italiano)</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 11,99</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(131, 'PORÇÃO DE CARNE COM QUEIJO MUSSARELA DERRETIDO ', 69.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/131.jpg', 'PESO APROXIMADO 0,480 GRAMAS ', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/131.jpg" 
+                                 alt="PORÇÃO DE CARNE COM QUEIJO MUSSARELA DERRETIDO "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">PORÇÃO DE CARNE COM QUEIJO MUSSARELA DERRETIDO </div><div class="prod-desc">PESO APROXIMADO 0,480 GRAMAS </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 69,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-LANCHES" data-category-name="cat-LANCHES" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">LANCHES</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(136, 'BAGUETE DE CHORIPAN  ( LINGUIÇA ) COM QUEIJO ', 37.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/136.png', 'BAGUETE SEMI ITALIANA , MUSSARELA FATIADA , LINGUIÇA, E VINAGRETE ', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/136.png" 
+                                 alt="BAGUETE DE CHORIPAN  ( LINGUIÇA ) COM QUEIJO "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BAGUETE DE CHORIPAN  ( LINGUIÇA ) COM QUEIJO </div><div class="prod-desc">BAGUETE SEMI ITALIANA , MUSSARELA FATIADA , LINGUIÇA, E VINAGRETE </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 37,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(179, 'HAMBURGUER-CHEDDAR NA BRASA', 29.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/173.png', 'HAMBURGUER ARTESANAL 180 GRAMAS , PAO DE BRIOCHE , CHEDDAR ', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/173.png" 
+                                 alt="HAMBURGUER-CHEDDAR NA BRASA"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">HAMBURGUER-CHEDDAR NA BRASA</div><div class="prod-desc">HAMBURGUER ARTESANAL 180 GRAMAS , PAO DE BRIOCHE , CHEDDAR </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 29,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(105, 'LANCHE BAGUETE CARNE', 40.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/105.png', 'CHURRASCO 0,220 GRAMAS  , VINAGRETE,  QUEIJO  E BAGUETE (SEMI ITALIANA )', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/105.png" 
+                                 alt="LANCHE BAGUETE CARNE"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">LANCHE BAGUETE CARNE</div><div class="prod-desc">CHURRASCO 0,220 GRAMAS  , VINAGRETE,  QUEIJO  E BAGUETE (SEMI ITALIANA )</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 40,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-POR----ES" data-category-name="cat-POR----ES" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">PORÇÕES</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(153, 'ANEIS DE CEBOLA  ( 250 GRAMAS )', 22.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/153.jpg', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/153.jpg" 
+                                 alt="ANEIS DE CEBOLA  ( 250 GRAMAS )"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">ANEIS DE CEBOLA  ( 250 GRAMAS )</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 22,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(21, 'BATATA FRITA', 25.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/21.png', 'APROXIMADAMENTE 400 GRAMAS', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/21.png" 
+                                 alt="BATATA FRITA"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">BATATA FRITA</div><div class="prod-desc">APROXIMADAMENTE 400 GRAMAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 25,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(94, 'POLENTA COM CALABRESA FRITA', 24.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/94.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/94.png" 
+                                 alt="POLENTA COM CALABRESA FRITA"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">POLENTA COM CALABRESA FRITA</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 24,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(93, 'POLENTA COM QUEIJO FRITA ', 24.9, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/93.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/93.png" 
+                                 alt="POLENTA COM QUEIJO FRITA "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">POLENTA COM QUEIJO FRITA </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 24,90</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-ACOMPANHAMENTOS" data-category-name="cat-ACOMPANHAMENTOS" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">ACOMPANHAMENTOS</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(107, 'AMENDOIM MENDORATO 24 GR', 3.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/107.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/107.png" 
+                                 alt="AMENDOIM MENDORATO 24 GR"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">AMENDOIM MENDORATO 24 GR</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 3,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-CERVEJAS" data-category-name="cat-CERVEJAS" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">CERVEJAS</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(46, 'HEINEKEN LONG NECK', 12, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/46.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/46.png" 
+                                 alt="HEINEKEN LONG NECK"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">HEINEKEN LONG NECK</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 12,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(47, 'HEINEKEN ZERO LONG NECK', 12, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/47.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/47.png" 
+                                 alt="HEINEKEN ZERO LONG NECK"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">HEINEKEN ZERO LONG NECK</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 12,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(76, 'ICE SMIRNOFF 275 ML', 13, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/76.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/76.png" 
+                                 alt="ICE SMIRNOFF 275 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">ICE SMIRNOFF 275 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 13,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(52, 'ITAIPAVA MALZEBIER LONG NECK', 12, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/52.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/52.png" 
+                                 alt="ITAIPAVA MALZEBIER LONG NECK"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">ITAIPAVA MALZEBIER LONG NECK</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 12,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-REFRI---LATAS" data-category-name="cat-REFRI---LATAS" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">REFRI - LATAS</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(28, 'AGUA TONICA ANTARTICA - LATA 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/28.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/28.png" 
+                                 alt="AGUA TONICA ANTARTICA - LATA 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">AGUA TONICA ANTARTICA - LATA 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(15, 'COCA COLA  ZERO - LATA 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/15.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/15.png" 
+                                 alt="COCA COLA  ZERO - LATA 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">COCA COLA  ZERO - LATA 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(23, 'COCA COLA LATA - 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/23.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/23.png" 
+                                 alt="COCA COLA LATA - 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">COCA COLA LATA - 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(31, 'ENERGETICO MONSTER - LATA 473 ML', 15, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/31.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/31.png" 
+                                 alt="ENERGETICO MONSTER - LATA 473 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">ENERGETICO MONSTER - LATA 473 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 15,00</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(24, 'FANTA LARANJA LATA - 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/24.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/24.png" 
+                                 alt="FANTA LARANJA LATA - 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">FANTA LARANJA LATA - 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(126, 'FANTA UVA LATA 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/126.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/126.png" 
+                                 alt="FANTA UVA LATA 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">FANTA UVA LATA 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(26, 'GUARANA ANTARTICA  LATA - 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/26.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/26.png" 
+                                 alt="GUARANA ANTARTICA  LATA - 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">GUARANA ANTARTICA  LATA - 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(27, 'GUARANA ANTARTICA LATA ZERO - 350 ML', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/27.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/27.png" 
+                                 alt="GUARANA ANTARTICA LATA ZERO - 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">GUARANA ANTARTICA LATA ZERO - 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(106, 'H20 LIMONETO 500 ML', 8.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/106.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/106.png" 
+                                 alt="H20 LIMONETO 500 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">H20 LIMONETO 500 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 8,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(38, 'H2O LIMAO - 500 ML', 8.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/38.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/38.png" 
+                                 alt="H2O LIMAO - 500 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">H2O LIMAO - 500 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 8,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(103, 'SCHWEPPES CITRUS LATA ', 7.99, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/103.png', '350 ML', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/103.png" 
+                                 alt="SCHWEPPES CITRUS LATA "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">SCHWEPPES CITRUS LATA </div><div class="prod-desc">350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,99</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(25, 'SPRITE LATA - 350 ML', 7.49, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/25.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/25.png" 
+                                 alt="SPRITE LATA - 350 ML"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">SPRITE LATA - 350 ML</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,49</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-AGUAS" data-category-name="cat-AGUAS" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">AGUAS</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(42, 'AGUA COM GAS', 4.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/42.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/42.png" 
+                                 alt="AGUA COM GAS"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">AGUA COM GAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 4,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(41, 'AGUA SEM GAS', 3.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/41.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/41.png" 
+                                 alt="AGUA SEM GAS"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">AGUA SEM GAS</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 3,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-SUCOS" data-category-name="cat-SUCOS" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">SUCOS</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(44, 'DEL VALE - UVA', 7.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/44.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/44.png" 
+                                 alt="DEL VALE - UVA"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">DEL VALE - UVA</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 7,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(45, 'KAPO - UVA', 4.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/45.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/45.png" 
+                                 alt="KAPO - UVA"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">KAPO - UVA</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 4,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                        <div class="product-item" onclick="openProductModal(114, 'KAPO MORANGO ', 4.5, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/114.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/114.png" 
+                                 alt="KAPO MORANGO "
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">KAPO MORANGO </div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 4,50</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+                    <div id="cat-SOBREMESA" data-category-name="cat-SOBREMESA" class="category-section" style="margin-bottom: 20px;">
+                <div class="category-header">SOBREMESA</div>
+                <div class="product-list">
+                                        <div class="product-item" onclick="openProductModal(14, 'PUDIM DE LEITE CONDENSADO', 14.99, 'https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/14.png', '', false)">
+                        <div class="prod-img">
+                            <img src="https://sistemaspdv.com.br/mesaespetinhosflamboyant/imagem/14.png" 
+                                 alt="PUDIM DE LEITE CONDENSADO"
+                                 onerror="this.src='https://placehold.co/120x120/f3f4f6/6b7280?text=Erro'">
+                        </div>
+                        <div class="prod-info">
+                            <div><div class="prod-title">PUDIM DE LEITE CONDENSADO</div></div>
+                            <div class="prod-footer">
+                                <div class="prod-price-wrap"><span class="price-main">R$ 14,99</span></div>
+                                <div class="btn-add"><i class="fas fa-plus"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                                    </div>
+            </div>
+            </div>
+
+    <!-- CARRINHO FLUTUANTE -->
+    <a href="/carrinho.php" class="cart-float" id="cartFloat">
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div style="background:rgba(255,255,255,0.2); padding:4px 8px; border-radius:6px; font-size:0.8rem;"><span id="cartCount">0</span> itens</div>
+            <span style="font-weight:600;">Ver Carrinho</span>
+        </div>
+        <span style="font-weight:800;">R$ <span id="cartTotal">0,00</span></span>
+    </a>
+
+    <!-- ✅ TELA DE QUANTIDADE E OBSERVAÇÃO (MODAL) -->
+    <div id="modal-produto">
+        <div class="modal-header">
+            <button onclick="closeProductModal()" class="text-white"><i class="fas fa-arrow-left text-lg"></i></button>
+            <h1 class="font-semibold text-lg">Quantidade</h1>
+        </div>
+        
+        <div class="modal-img">
+            <img id="modal-img" src="" alt="">
+        </div>
+        
+        <h2 id="modal-title" class="modal-title"></h2>
+        <p id="modal-desc" class="modal-desc"></p>
+        
+        <div class="qty-control">
+            <div class="qty-header">
+                <span class="qty-label">Selecione a quantidade</span>
+                <span class="qty-unit">Valor unitário</span>
+            </div>
+            <div class="qty-buttons">
+                <button onclick="modalQty(-1)" class="qty-btn minus">−</button>
+                <span id="modal-qty" class="qty-value">1</span>
+                <button onclick="modalQty(1)" class="qty-btn plus">+</button>
+                <div class="qty-total">
+                    <div id="modal-total-price" class="qty-total-price"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="obs-section">
+            <label class="obs-label">Observações do item</label>
+            <input type="text" id="modal-obs" class="obs-input" placeholder="Ex: Sem cebola, ponto da carne, molho à parte...">
+        </div>
+        
+        <button onclick="inserirNoCarrinho()" class="btn-add-to-cart">
+            <i class="fas fa-cart-plus"></i>
+            Inserir no carrinho
+        </button>
+    </div>
+
+    <script>
+        function toggleSearch() { const box = document.getElementById('searchBox'); box.classList.toggle('show'); if (box.classList.contains('show')) { setTimeout(() => box.querySelector('.search-input').focus(), 100); } }
+        
+        let cart = JSON.parse(localStorage.getItem('cart') || '{}'); updateCartUI();
+        
+        let modalProductId = null;
+        let modalProductPrice = 0;
+        let modalProductPromo = false;
+        let currentModalQty = 1;
+        
+        function openProductModal(id, nome, preco, img, desc, emPromocao = false) {
+            modalProductId = id;
+            modalProductPrice = preco;
+            modalProductPromo = emPromocao;
+            currentModalQty = 1;
+            
+            document.getElementById('modal-title').innerText = nome;
+            document.getElementById('modal-desc').innerText = desc || 'Sem descrição adicional';
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal-qty').innerText = '1';
+            document.getElementById('modal-total-price').innerText = formatMoney(preco);
+            document.getElementById('modal-obs').value = '';
+            
+            document.getElementById('modal-produto').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeProductModal() {
+            document.getElementById('modal-produto').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        function modalQty(change) {
+            if (currentModalQty + change >= 1) {
+                currentModalQty += change;
+                document.getElementById('modal-qty').innerText = currentModalQty;
+                document.getElementById('modal-total-price').innerText = formatMoney(modalProductPrice * currentModalQty);
+            }
+        }
+        
+        function inserirNoCarrinho() {
+            const obs = document.getElementById('modal-obs').value.trim();
+            
+            if (!cart[modalProductId]) {
+                cart[modalProductId] = { 
+                    id: modalProductId, 
+                    nome: document.getElementById('modal-title').innerText, 
+                    preco: modalProductPrice, 
+                    qtd: 0, 
+                    obs: '',
+                    emPromocao: modalProductPromo
+                };
+            }
+            
+            cart[modalProductId].qtd += currentModalQty;
+            if (obs) cart[modalProductId].obs = obs;
+            
+            saveCart();
+            closeProductModal();
+        }
+        
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+        
+        function updateCartUI() {
+            let count = 0; let total = 0;
+            for(let key in cart) { count += cart[key].qtd; total += cart[key].preco * cart[key].qtd; }
+            document.getElementById('cartCount').innerText = count;
+            document.getElementById('cartTotal').innerText = total.toFixed(2).replace('.', ',');
+            const badge = document.getElementById('cartBadge');
+            if(badge) { if(count > 0) { badge.innerText = count; badge.classList.remove('hidden'); } else { badge.classList.add('hidden'); } }
+            const float = document.getElementById('cartFloat');
+            if(count > 0) float.classList.add('show'); else float.classList.remove('show');
+        }
+        
+        function formatMoney(value) {
+            return 'R$ ' + parseFloat(value).toFixed(2).replace('.', ',');
+        }
+        
+        // ✅ SCROLL SPY
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.category-section, .promo-section');
+            const navLinks = document.querySelectorAll('.tab-btn');
+            const observerOptions = { root: null, rootMargin: '-100px 0px -60% 0px', threshold: 0 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        const id = entry.target.getAttribute('id');
+                        const activeLink = document.querySelector(`.tab-btn[href="#${id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                            activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                        }
+                    }
+                });
+            }, observerOptions);
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>

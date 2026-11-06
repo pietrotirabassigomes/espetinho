@@ -1,0 +1,180 @@
+:root{--bg:#000;--bg2:#0d0707;--card:#150a0a;--fg:#fff;--mut:#c9b8b4;--red:#e8201a;--org:#ff6a13;--yel:#ffb020;--line:#3a1512}
+html{scroll-behavior:smooth;scroll-padding-top:76px;height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 Barlow,system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:'Chakra Petch','Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;margin:0;line-height:1.1}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--yel);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+section{padding:92px 0;position:relative}
+.sec-t{font-size:clamp(30px,5vw,48px);text-align:center}
+.sec-s{text-align:center;color:var(--mut);max-width:560px;margin:12px auto 0}
+.div{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px 0 46px}
+.div i{height:2px;width:90px;background:var(--red)}
+.div svg{width:28px;height:28px}
+/* nav */
+header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+header::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:var(--p,0%);background:linear-gradient(90deg,var(--red),var(--yel))}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font:700 20px 'Chakra Petch';letter-spacing:.1em;display:flex;align-items:center;gap:10px}
+.logo b{color:var(--red)}
+.logo svg{width:26px;height:26px}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+nav a{font:600 16px 'Barlow Condensed';letter-spacing:.12em;text-transform:uppercase;padding:6px 0;border-bottom:2px solid transparent;transition:.25s}
+nav a:hover,nav a.on{color:var(--yel);border-color:var(--red)}
+.btn{display:inline-block;background:linear-gradient(135deg,var(--red),var(--org));color:#fff;font:700 17px 'Chakra Petch';letter-spacing:.08em;text-transform:uppercase;padding:14px 28px;border-radius:6px;border:0;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-3px) rotate(-1deg);box-shadow:0 10px 28px rgba(232,32,26,.45)}
+.btn.o{background:none;border:2px solid #fff}
+.btn.o:hover{border-color:var(--yel);color:var(--yel);box-shadow:none}
+.burger{display:none;background:none;border:2px solid var(--line);color:#fff;font-size:22px;border-radius:6px;padding:4px 12px;cursor:pointer}
+/* hero */
+.hero{min-height:100vh;display:flex;align-items:center;text-align:center;padding-top:110px;background:radial-gradient(ellipse at 50% 105%,rgba(232,32,26,.5),transparent 60%),#000;overflow:hidden}
+.hero h1{font-size:clamp(44px,10vw,112px);letter-spacing:.08em}
+.hero .pre{font:700 clamp(20px,3.4vw,34px) 'Chakra Petch';letter-spacing:.22em;text-transform:uppercase}
+.hero .tag{font-size:19px;color:var(--mut);max-width:540px;margin:22px auto 34px}
+.hero h1 span{background:linear-gradient(180deg,#fff 30%,var(--yel) 75%,var(--org));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block;animation:rise 1s .2s both}
+.hero .pre{animation:rise 1s both}
+.hero .tag,.hero .ctas{animation:rise 1s .5s both}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+.ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.grill{width:150px;margin:0 auto 18px;display:block;animation:rise 1s .1s both}
+.steam path{animation:steam 2.4s infinite ease-in-out;opacity:0}
+.steam path:nth-child(2){animation-delay:.5s}.steam path:nth-child(3){animation-delay:1s}.steam path:nth-child(4){animation-delay:1.5s}
+@keyframes steam{0%{opacity:0;transform:translateY(8px)}50%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+.flame{position:absolute;bottom:-30px;width:120px;opacity:.9;transform-origin:50% 100%;animation:flick 1.3s infinite alternate ease-in-out}
+@keyframes flick{from{transform:scale(1,.92) rotate(-2deg)}to{transform:scale(.95,1.08) rotate(2deg)}}
+.ember{position:absolute;bottom:-10px;width:6px;height:6px;border-radius:50%;background:var(--org);box-shadow:0 0 10px var(--yel);animation:up linear infinite;opacity:0}
+@keyframes up{0%{opacity:0;transform:translateY(0)}15%{opacity:1}100%{opacity:0;transform:translateY(-85vh) translateX(40px)}}
+.skewer-line{display:flex;justify-content:center;align-items:center;gap:0;margin-top:44px;animation:rise 1s .8s both}
+.skewer-line::before{content:"";width:min(520px,70vw);height:5px;background:linear-gradient(90deg,transparent,#c9b8b4 8%,#c9b8b4 92%,transparent);border-radius:3px}
+/* marquee */
+.mq{background:var(--red);overflow:hidden;white-space:nowrap;padding:12px 0;transform:rotate(-1deg);margin:-14px -10px 0;position:relative;z-index:2}
+.mq div{display:inline-block;animation:mq 28s linear infinite;font:700 22px 'Chakra Petch';letter-spacing:.14em;text-transform:uppercase}
+.mq span{margin:0 22px;color:var(--yel)}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* sobre */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.about p{color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center}
+.stat b{display:block;font:700 44px 'Chakra Petch';color:var(--org)}
+.stat small{color:var(--mut);font-size:15px}
+/* cardápio */
+.menu{background:var(--bg2)}
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.tab{background:none;border:2px solid var(--line);color:#fff;font:600 17px 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase;padding:9px 22px;border-radius:30px;cursor:pointer;transition:.2s}
+.tab:hover{border-color:var(--org)}
+.tab.on{background:var(--red);border-color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 0 22px;overflow:hidden;transition:transform .25s,border-color .25s;animation:pop .45s both}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.item:hover{transform:translateY(-6px);border-color:var(--org)}
+.item .sk{height:92px;background:linear-gradient(180deg,#2a0e0b,var(--card));display:flex;align-items:center;justify-content:center}
+.item svg{width:210px}
+.product-photo{height:180px;background:linear-gradient(180deg,#2a0e0b,var(--card));overflow:hidden}
+.product-photo img{width:100%;height:100%;display:block;object-fit:cover}
+.item h3{font-size:22px;padding:16px 22px 0}
+.item p{margin:6px 22px 14px;color:var(--mut);font-size:15px}
+.item .pr{margin:0 22px;font:700 24px 'Chakra Petch';color:var(--yel)}
+.item .pr del{margin-left:8px;color:var(--mut);font:500 16px Barlow,system-ui,sans-serif}
+.hide{display:none}
+/* combos */
+.combos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.combo{position:relative;border:2px dashed var(--red);border-radius:14px;padding:34px 26px;text-align:center;background:radial-gradient(circle at 50% 0,rgba(232,32,26,.25),transparent 70%)}
+.combo.hot{border-style:solid;border-color:var(--org);background:radial-gradient(circle at 50% 0,rgba(255,106,19,.35),transparent 70%)}
+.combo em{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--yel);color:#000;font:700 14px 'Chakra Petch';letter-spacing:.1em;padding:4px 14px;border-radius:20px;font-style:normal;text-transform:uppercase;white-space:nowrap}
+.combo h3{font-size:26px}
+.combo ul{list-style:none;padding:0;margin:16px 0;color:var(--mut)}
+.combo b{font:700 36px 'Chakra Petch';color:var(--yel)}
+/* depoimentos */
+.dep{background:var(--bg2)}
+.quote{display:none;text-align:center;max-width:680px;margin:0 auto;animation:pop .5s both}
+.quote.on{display:block}
+.quote p{font-size:23px;font-style:italic;margin:0 0 16px}
+.quote b{color:var(--org);font:600 18px 'Barlow Condensed';letter-spacing:.14em;text-transform:uppercase}
+.dots{display:flex;gap:10px;justify-content:center;margin-top:24px}
+.dots button{width:14px;height:14px;border-radius:50%;border:2px solid var(--org);background:none;cursor:pointer;padding:0}
+.dots button.on{background:var(--org)}
+/* contato */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.info{display:grid;gap:14px;align-content:start}
+.info div{background:var(--card);border-left:4px solid var(--red);padding:16px 20px;border-radius:0 8px 8px 0}
+.info b{display:block;font:600 18px 'Barlow Condensed';letter-spacing:.12em;text-transform:uppercase;color:var(--yel)}
+form{display:grid;gap:14px}
+input,select,textarea{width:100%;background:var(--card);border:1px solid var(--line);color:#fff;border-radius:8px;padding:13px 14px;font:inherit}
+input:focus,select:focus,textarea:focus{border-color:var(--org);outline:none}
+.ok{display:none;color:var(--yel);font-weight:500}
+/* footer */
+footer{background:var(--bg2);border-top:3px solid var(--red);padding:64px 0 0}
+.fg{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:36px}
+footer h4{font:700 18px 'Chakra Petch';letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px;color:var(--yel)}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;color:var(--mut)}
+footer a:hover{color:var(--org)}
+footer p{color:var(--mut);margin:12px 0}
+.soc{display:flex;gap:10px}
+.soc a{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font:700 14px 'Chakra Petch';transition:.2s}
+.soc a:hover{background:var(--red);transform:translateY(-3px)}
+.copy{margin-top:48px;border-top:1px solid var(--line);padding:20px 0;text-align:center;color:var(--mut);font-size:14px}
+.top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:48px;height:48px;border-radius:50%;background:var(--red);border:0;color:#fff;font-size:22px;cursor:pointer;opacity:0;pointer-events:none;transition:.3s;z-index:40}
+.top.v{opacity:1;pointer-events:auto}
+.wa{position:fixed;left:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));background:#1faa59;color:#fff;font:700 15px 'Chakra Petch';padding:12px 18px;border-radius:30px;z-index:40;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,170,89,.6)}70%{box-shadow:0 0 0 16px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@media(max-width:860px){
+.burger{display:block}
+nav ul{position:absolute;top:100%;left:0;right:0;background:#000;flex-direction:column;gap:0;padding:8px 22px 18px;border-bottom:1px solid var(--line);display:none}
+nav ul.open{display:flex}
+nav li{padding:10px 0}
+.about,.contact,.fg{grid-template-columns:1fr}
+.nav>.btn{display:none}
+section{padding:68px 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.hero h1 span,.hero .pre,.hero .tag,.hero .ctas,.grill,.skewer-line{opacity:1!important}}
+
+/* ===== Extras: logo, novas seções e página do cardápio ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.alt{background:var(--bg2)}
+/* logo recortada (churrasqueira + chamas) para o menu e o rodapé */
+.mark{position:relative;display:block;flex:none;width:62px;aspect-ratio:400/240;overflow:hidden}
+.mark img{position:absolute;width:270%;left:-85%;top:-172.9%;max-width:none}
+/* logo grande do hero */
+.hero-logo{position:relative;width:min(560px,92vw);aspect-ratio:740/540;margin:0 auto;overflow:hidden;animation:rise 1s both}
+.hero-logo img{position:absolute;width:145.9%;left:-22.97%;top:-46.3%;max-width:none}
+.pill{display:inline-block;font:600 15px 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:30px;border:1px solid var(--line);margin-bottom:14px}
+.pill:empty{display:none}
+.pill.o{border-color:#1faa59;color:#6fe39b}
+.pill.c{border-color:var(--red);color:#ff8a82}
+/* sobre nós: valores */
+.vals,.feat,.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px}
+.val{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--red);border-radius:10px;padding:26px}
+.val svg{width:34px;height:34px;margin-bottom:10px}
+.val h3{font-size:21px;margin-bottom:8px}
+.val p{margin:0;color:var(--mut);font-size:16px}
+/* destaques */
+.item{position:relative}
+.badge{position:absolute;top:12px;left:12px;z-index:1;background:var(--yel);color:#000;font:700 13px 'Chakra Petch';letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+/* como pedir */
+.step{text-align:center;padding:28px 24px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.step b{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 14px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--org));font:700 24px 'Chakra Petch'}
+.step h3{font-size:21px;margin-bottom:8px}
+.step p{margin:0;color:var(--mut);font-size:16px}
+/* faixa de chamada */
+.band{background:linear-gradient(135deg,#7a0f0b,var(--red) 55%,var(--org));text-align:center;padding:68px 0}
+.band h2{font-size:clamp(28px,5vw,44px)}
+.band p{max-width:560px;margin:14px auto 26px}
+.band .btn{background:#000}
+.band .btn:hover{box-shadow:0 10px 28px rgba(0,0,0,.5)}
+/* perguntas frequentes */
+.faq{max-width:760px;margin:0 auto}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;padding:0 20px}
+details[open]{border-color:var(--org)}
+summary{cursor:pointer;padding:16px 0;font:600 20px 'Barlow Condensed';letter-spacing:.06em;list-style:none;display:flex;justify-content:space-between;gap:14px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--org);font-size:26px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 16px;color:var(--mut)}
+/* página do cardápio */
+.page-hero{padding:140px 0 56px;text-align:center;background:radial-gradient(ellipse at 50% 130%,rgba(232,32,26,.5),transparent 65%)}
+.page-hero h1{font-size:clamp(42px,8vw,86px);letter-spacing:.1em;animation:rise .8s both}
+.page-hero .sec-s{animation:rise .8s .2s both}
+.search{max-width:420px;margin:0 auto 28px}
+@media(max-width:520px){.logo{font-size:14px}.mark{width:50px}}
